@@ -28,16 +28,34 @@ class TaskList:
     def pending(self):
         return [t for t in self.tasks if not t.done]
 
+    def filter_by_priority(self, priority):
+        """Return tasks filtered by priority level"""
+        return [t for t in self.tasks if t.priority == priority]
+
+    def remove(self, index):
+        """Remove a task by index"""
+        if 0 <= index < len(self.tasks):
+            self.tasks.pop(index)
+
 
 # Usage
 todo = TaskList()
 todo.add("Write proposal", priority="high")
 todo.add("Review PRs")
 todo.add("Reply to emails", priority="low")
+todo.add("Debug login issue", priority="high")
 
 todo.complete(1)
 
+print("All tasks:")
 for task in todo.tasks:
-    print(task)
+    print(f"  {task}")
 
-print(f"\n{len(todo.pending())} task(s) remaining")
+print("\nHigh priority tasks:")
+for task in todo.filter_by_priority("high"):
+    print(f"  {task}")
+
+print(f"\nTotal: {len(todo.tasks)} | Pending: {len(todo.pending())}")
+
+todo.remove(2)
+print(f"After removal: {len(todo.tasks)} tasks")
